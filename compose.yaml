@@ -1,25 +1,53 @@
-
 services:
-###> doctrine/doctrine-bundle ###
-  database:
-    image: postgres:${POSTGRES_VERSION:-16}-alpine
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
-    healthcheck:
-      test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-app}", "-U", "${POSTGRES_USER:-app}"]
-      timeout: 5s
-      retries: 5
-      start_period: 60s
+  # Define el servicio web
+  web:
+    build: .
+    container_name: webserver
+    ports:
+      - "80:80"
+      - "9003:9003"
     volumes:
-      - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+      - .:/var/www/html
+    networks:
+      - web_network
+    restart: always
+    depends_on:
+      - db
+
+  # Define el servicio de DB
+  db:
+    image: mariadb:10.11.2
+    container_name: database
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DB_DATABASE}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - database_data:/var/lib/mysql
+    networks:
+      - web_network
+    restart: always
+
+# Define el servicio de phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+    ports:
+      - 8081:80
+    volumes:
+      - phpmyadmin_data:/sessions
+    networks:
+      - web_network
+    restart: always
 
 volumes:
-###> doctrine/doctrine-bundle ###
+  phpmyadmin_data:
   database_data:
-###< doctrine/doctrine-bundle ###
+
+networks:
+  web_network:
+    driver: bridge
