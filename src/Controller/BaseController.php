@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Categoria;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Entity\Producto;
 
 #[IsGranted('ROLE_USER')]
 final class BaseController extends AbstractController
@@ -21,11 +22,11 @@ final class BaseController extends AbstractController
         ]);
     }
     
-    #[Route('/productos/{categorias}', name: 'productos')]
-    public function mostrar_productos(EntityManagerInterface $em): Response
+    #[Route('/productos/{categoria_id}', name: 'productos')]
+    public function mostrar_productos(EntityManagerInterface $em, int $categoria_id): Response
     {
-        $categorias = 
-        $productos = $em->getRepository(Producto::class)->findAll();
+        $objeto_categoria = $em->getRepository(Categoria::class)->find($categoria_id);
+        $productos = $objeto_categoria->getProductos();
         return $this->render('productos/mostrar_productos.html.twig', [
             'productos' => $productos,
         ]);
