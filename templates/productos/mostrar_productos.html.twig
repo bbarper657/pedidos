@@ -4,6 +4,7 @@
 
 {% block body %}
     <h1>PRODUCTOS</h1>
+    <form action="{{ path("anadir") }}">
     <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-family: Arial, sans-serif;">
         <thead>
             <tr style="background-color: #d6eaf8; color: #2c3e50;">
@@ -11,6 +12,7 @@
                 <td style="padding: 10px; text-align: left;">Nombre</td>
                 <td style="padding: 10px; text-align: left;">Descripción</td>
                 <td style="padding: 10px; text-align: left;">Precio</td>
+                <td style="padding: 10px; text-align: left;">Unidades</td>
             </tr>
         </thead>
         <tbody>
@@ -20,9 +22,15 @@
                     <td style="padding: 10px;">{{ producto.getNombre() }}</td>
                     <td style="padding: 10px;">{{ producto.getDescripcion() }}</td>
                     <td style="padding: 10px;">{{ producto.getPrecio() }}</td>
+                    <td>
+                        <input type="number" name="unidades[]" value="0">
+                        <input type="hidden" name="productos_id[]" value="{{ producto.getId() }}">
+                    </td>
                 </tr>
             
             {% endfor %}
         </tbody>
     </table>
+        <input type="submit" name="enviar" value="Enviar">
+    </form>
 {% endblock %}
