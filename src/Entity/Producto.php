@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ProductoRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Categoria;
 
 #[ORM\Entity(repositoryClass: ProductoRepository::class)]
 class Producto

@@ -3,8 +3,11 @@
 {% block title %}Hello CategoriasController{% endblock %}
 
 {% block contenido %}
-    <h1>Mostrar Categorias</h1>
-    <div>
-        
-    </div>
+    <h1>Mostrar Cesta</h1>
+    <table>
+    {% for producto in productos %}
+        <p><a href="{{ path('productos', {'categoria_id': categoria.getId()}) }}">{{ categoria.getNombre }}</a></p>
+            
+    {% endfor %}
+    </table>
 {% endblock %}

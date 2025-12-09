@@ -11,7 +11,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Entity\Producto;
 use Symfony\Component\HttpFoundation\Request;
 use App\Services\CestaCompra;
-use Doctrine\Persistence\ManagerRegistry;
 
 #[IsGranted('ROLE_USER')]
 final class BaseController extends AbstractController
@@ -36,21 +35,26 @@ final class BaseController extends AbstractController
     }
     
     #[Route('/anadir', name: 'anadir')]
-    public function anadir_productos(EntityManagerInterface $em, Request $request, CestaCompra $cesta){
+    public function anadir_productos(EntityManagerInterface $em, Request $request, CestaCompra $cesta): Response {
         // Recogemos los datos de entrada (los valores de la petición post)
-        $productos_ids = $request->request->get("productos_id");
-        $unidades = $request->request->get("unidades");
+        $productos_ids = $request->request->all("productos_id");
+        $unidades = $request->request->all("unidades");
         
         // Obtenemos un array de objetos Producto, a partir de sus id
-        $productos = $em->getRepository(Producto::class)->findProductosByIds($productos_ids);
+        $productos = $em->getRepository(Producto::class)->findBy(['id' => $productos_ids]);
         
         // Llamamos a carga_productos para añadir a la cesta los productos 
         // seleccionados junto con sus unidades
         $cesta->cargar_productos($productos, $unidades);
         
+        // Obtenemos el id de la categoria a partir de cualquier objeto Producto
         $objetos_producto = array_values($productos);
         
-        return $this->redirectToRoute('productos', ['categoria'=>$objetos_producto(0)->getCategoria()]);
+        $categoria_id = $objetos_producto[0]->getCategoria()->getId();
+        
+        return $this->redirectToRoute('productos', [
+            'categoria_id' => $categoria_id
+        ]);
 
     }
     

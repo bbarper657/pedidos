@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Entity\Producto;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CestaCompra {
     
@@ -16,45 +18,43 @@ class CestaCompra {
     }
     
     public function cargar_productos($productos, $unidades) {
+        // Recibe como parámetros los productos y las unidades añadidos del formulario
+        $this->carga_cesta(); // Cargamos la sesión de la cesta
+        
         for ($i = 0; $i < count($productos); $i++) {
-            if ($unidades[i] != 0) {
+            if ($unidades[$i] != 0) {
                 
                 // Cargamos un producto a la sesión
                 $this->cargar_producto($productos[$i], $unidades[$i]);
             }
         }
+        // Guardamos en la cesta
+        $this->guardar_cesta();
     }
     
     // Recibe como parámetro el objeto Producto con su unidad y la carga a la cesta
     public function cargar_producto($producto, $unidad) {
-        $this->carga_cesta(); // Cargamos la sesión de la cesta
         
         // Ahora podemos utilizar los productos y las unidades
         // Creamos una variable donde guardamos el codigo del producto
         $codigo_producto = $producto->getCodigo();
         
         // Cargamos el código de producto a la cesta
+        // Mira si el código existe
         // Si el producto ya existe, incrementamos las unidades de la cesta
         if (array_key_exists($codigo_producto, $this->productos)){
             
-            // Guardamos un array de todos los codigos de los productos
-            $codigos_productos = array_keys($this->productos);
+            $this->unidades[$codigo_producto]+=$unidad;
             
-            
-            $posicion = array_search($codigo_producto, $codigos_productos);
-            
-            $unidades[$posicion]+=$unidad;
-            
-        } else {
-            $productos[] = ['$codigo_producto' => $producto];
-            $unidades[] = [$unidad];
+        } elseif ($unidad != 0){
+            $this->productos[$codigo_producto] = $producto;
+            $this->unidades[$codigo_producto] = $unidad;
         }
-        
-        $this->guardar_cesta();
     }
     
+    // Recupera el array de productos y unidades de la sesion
     protected function carga_cesta() {
-        // Guardamos la sesion
+        // Recuperamos la sesion
         $sesion = $this->requestStack->getSession();
         
         // Si hay productos en la sesión, los cargamos en los atributos del objeto cesta
@@ -65,16 +65,13 @@ class CestaCompra {
             $this->productos = [];
             $this->unidades = [];
         }
-        
-        // Creamos un carrito
-        $carrito = $sesion->get('carrito');
     }
     
     protected function guardar_cesta() {
         $sesion = $this->requestStack->getSession();
         
-        $sesion->set($this->productos);
-        $sesion->set($this->unidades);
+        $sesion->set('productos', $this->productos);
+        $sesion->set('unidades', $this->unidades);
     }
     
     public function get_productos() {
