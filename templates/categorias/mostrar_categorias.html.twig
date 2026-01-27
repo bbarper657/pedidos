@@ -2,7 +2,7 @@
 
 {% block title %}Hello CategoriasController!{% endblock %}
 
-{% block body %}
+{% block contenido %}
     <h1>CATEGORIAS</h1>
     {% for categoria in categorias %}
         <p><a href="{{ path('productos', {'categoria_id': categoria.id}) }}">{{ categoria.getNombre }}</a></p>

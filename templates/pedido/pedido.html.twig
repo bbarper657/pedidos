@@ -1,0 +1,13 @@
+{# empty Twig template #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Pedido Confirmado{% endblock %}
+    
+{% block contenido %}
+    {% if error == 1 %}
+        <p>No hay productos en su pedido</p>
+    {% elseif error == 0 %}
+        <p>Su pedido se ha realizado correctamente</p>
+        <p>ID: {{ pedido_id }}</p>
+    {% endif %}
+{% endblock %}

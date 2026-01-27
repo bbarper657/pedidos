@@ -5,14 +5,12 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
     </head>
     <body>
-        {% block body %}
         <header>
             {% block header %}
                 {{ include('cabecera.html.twig') }}
             {% endblock %}
         </header>
-            {% block contenido %}
-            {% endblock %}
+        {% block contenido %}
         {% endblock %}
     </body>
 </html>

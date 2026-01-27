@@ -5,9 +5,36 @@
 {% block contenido %}
     <h1>Mostrar Cesta</h1>
     <table>
+        <tr>
+            <th>Nombre Corto</th>
+            <th>Nombre del Producto</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Unidades</th>
+            <th>Eliminar</th>
+        </tr>
     {% for producto in productos %}
-        <p><a href="{{ path('productos', {'categoria_id': categoria.getId()}) }}">{{ categoria.getNombre }}</a></p>
+        <p><a href="{{ path('productos', {'categoria_id': producto.getId()}) }}">{{ producto.getNombre }}</a></p>
             
+        <tr>
+            <td>{{ producto.nombreCorto }}</td>
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.descripcion }}</td>
+            <td>{{ producto.precio }}</td>
+            <td>{{ unidades[producto.codigo] }}</td>
+            <td>
+                <form method="POST" action="{{ path('eliminar') }}">
+                    <input type="number" value="1" min="1" name="unidades">
+                    <input type="hidden" name="producto_id" value="{{ producto.codigo }}">
+                    <input type="submit" name="eliminar_producto" value="Eliminar">
+                </form>
+            </td>
+            <td>
+                <form action="{{ path('pedido') }}" method="get">
+                    <button type="submit">Comprar</button>
+                </form>
+            </td>
+        </tr>
     {% endfor %}
     </table>
 {% endblock %}

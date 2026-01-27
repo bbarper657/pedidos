@@ -5,7 +5,6 @@ services:
     container_name: webserver
     ports:
       - "80:80"
-      - "9003:9003"
     volumes:
       - .:/var/www/html
     networks:
