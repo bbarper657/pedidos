@@ -1,40 +1,67 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Hello CategoriasController{% endblock %}
-
+{% block title %}Tu Cesta{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/cesta.css') }}">
+{% endblock %}
 {% block contenido %}
-    <h1>Mostrar Cesta</h1>
-    <table>
-        <tr>
-            <th>Nombre Corto</th>
-            <th>Nombre del Producto</th>
-            <th>Descripción</th>
-            <th>Precio</th>
-            <th>Unidades</th>
-            <th>Eliminar</th>
-        </tr>
-    {% for producto in productos %}
-        <p><a href="{{ path('productos', {'categoria_id': producto.getId()}) }}">{{ producto.getNombre }}</a></p>
-            
-        <tr>
-            <td>{{ producto.nombreCorto }}</td>
-            <td>{{ producto.nombre }}</td>
-            <td>{{ producto.descripcion }}</td>
-            <td>{{ producto.precio }}</td>
-            <td>{{ unidades[producto.codigo] }}</td>
-            <td>
-                <form method="POST" action="{{ path('eliminar') }}">
-                    <input type="number" value="1" min="1" name="unidades">
-                    <input type="hidden" name="producto_id" value="{{ producto.codigo }}">
-                    <input type="submit" name="eliminar_producto" value="Eliminar">
-                </form>
-            </td>
-            <td>
-                <form action="{{ path('pedido') }}" method="get">
-                    <button type="submit">Comprar</button>
-                </form>
-            </td>
-        </tr>
-    {% endfor %}
-    </table>
+
+    <div class="cart-container">
+
+        <h1 class="cart-title">Tu Cesta</h1>
+
+        <div class="cart-layout">
+            <div class="cart-list">
+                {% for producto in productos %}
+                    <div class="cart-item">
+                        <div class="item-info">
+                            <small style="color: var(--primary); font-weight: 600;">{{ producto.nombreCorto }}</small>
+                            <h3>{{ producto.nombre }}</h3>
+                            <p>{{ producto.descripcion }}</p>
+                        </div>
+
+                        <div class="item-price">
+                            {{ producto.precio }}€
+                            <div style="font-size: 0.8rem; font-weight: 400; color: var(--text-light);">
+                                Cant: {{ unidades[producto.codigo] }}
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <form method="POST" action="{{ path('eliminar') }}" style="display: flex; gap: 8px; align-items: center;">
+                                <input type="number" value="1" min="1" max="{{ unidades[producto.codigo] }}" name="unidades" class="input-remove">
+                                <input type="hidden" name="producto_id" value="{{ producto.codigo }}">
+                                <button type="submit" name="eliminar_producto" class="btn-remove">
+                                    Eliminar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% else %}
+                    <div style="text-align: center; padding: 3rem; background: white; border-radius: 20px;">
+                        <p style="color: var(--text-light);">Tu cesta está vacía.</p>
+                        <a href="{{ path('categorias') }}" style="color: var(--primary); font-weight: 600;">Volver a la tienda</a>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% if productos|length > 0 %}
+                <aside class="cart-summary">
+                    <div class="summary-title">Resumen del pedido</div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="color: var(--text-light);">Productos:</span>
+                        <span>{{ productos|length }}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1.2rem; margin-top: 20px; padding-top: 20px; border-top: 2px dashed #f1f5f9;">
+                        <span>Total:</span>
+                        <span>Calculando...</span>
+                    </div>
+                    <form action="{{ path('pedido') }}" method="get">
+                        <button type="submit" class="btn-checkout">Finalizar Compra</button>
+                    </form>
+                    <p style="font-size: 0.75rem; color: var(--text-light); text-align: center; margin-top: 1rem;">
+                        Pago seguro garantizado
+                    </p>
+                </aside>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

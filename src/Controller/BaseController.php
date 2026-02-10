@@ -18,6 +18,7 @@ use App\Entity\Pedido;
 use App\Entity\PedidoProducto;
 use App\Entity\Usuario;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 #[IsGranted('ROLE_USER')]
 final class BaseController extends AbstractController {
@@ -84,7 +85,7 @@ final class BaseController extends AbstractController {
     }
 
     #[Route('/pedido', name: 'pedido')]
-    public function pedido(EntityManagerInterface $em, CestaCompra $cesta) {
+    public function pedido(EntityManagerInterface $em, CestaCompra $cesta, MailerInterface $mailer) {
         // Iniciamos la variable error
         $error = 0;
 
@@ -111,7 +112,7 @@ final class BaseController extends AbstractController {
                 $pedidoProducto = new PedidoProducto();
                 $pedidoProducto->setPedido($pedido);
 
-                $producto = $em->getRepository(Producto::class)->findBy(['id' => $productoCesta->getId()]);
+                $producto = $em->getRepository(Producto::class)->find(['id' => $productoCesta->getId()]);
 
                 $pedidoProducto->setProducto($producto);
                 $pedidoProducto->setUnidades($unidades[$codigo_producto]);
@@ -129,14 +130,15 @@ final class BaseController extends AbstractController {
                 $error = 2;
             }
 
+            // Servicio mailer
             if (!$error) {
                 // Obtenemos el id del usuario de la sesion
-                $usuario_id = $this->getUser()->getUserIdentifier();
+                $usuario_id = $this->getUser()->getId();
                 // Sacamos el usuario del id
                 $usuario = $em->getRepository(Usuario::class)->find($usuario_id);
-                
+
                 $destination_email = $usuario->getEmail();
-                
+
                 $email = (new TemplatedEmail())
                         ->from('bbarper657@g.educaand.es')
                         ->to(new Address($destination_email))
@@ -147,17 +149,50 @@ final class BaseController extends AbstractController {
                         ->locale('es')
                         // pasamos variables (clave => valor) a la plantilla
                         ->context([
-                            'pedido_id' => $pedido->getId(), 'productos' => $cesta->getProductos(), 'unidades' => $cesta->getUnidades(),
-                            'coste' => $cesta->getCoste(),
-                        ])
-                ;
+                            'pedido_id' => $pedido->getId(), 'productos' => $cesta->get_productos(), 'unidades' => $cesta->get_unidades(),
+                            'coste' => $cesta->calcular_coste(),
+                ]);
+                $mailer->send($email);
             }
-
-            return $this->render('pedido/pedido.html.twig', [
-                        'pedido_id' => $pedido->getId(),
-                        'error' => $error,
-            ]);
         }
+
+        return $this->render('pedido/pedido.html.twig', [
+                    'pedido_id' => $pedido->getId(),
+                    'error' => $error,
+        ]);
+    }
+
+    #[Route('/historial', name: 'historial')]
+    public function historial(EntityManagerInterface $em): Response {
+        // Recuperamos el usuario logueado
+        $usuario = $this->getUser();
+
+        // Accedemos a todos los pedidos del usuario
+        $pedidos = $em->getRepository(Pedido::class)->findBy(
+                ['usuario' => $usuario],
+                ['fecha' => 'DESC']
+        );
+
+        // Creamos un array donde guardaremos todos los pedidos
+        $pedidoProductosPorPedido = [];
+
+        // Recorremos cada pedido del usuario
+        foreach ($pedidos as $pedido) {
+            // Buscamos en la base de datos cada pedido del usuario
+            $pedidoProductosPorPedido[$pedido->getId()] = $em->getRepository(PedidoProducto::class)
+                    ->findBy(['pedido' => $pedido]);
+        }
+
+        // Devolvemos a la vista los datos adquiridos
+        return $this->render('historial/mostrar_historial.html.twig', [
+                    'pedidos' => $pedidos,
+                    'pedidoProductos' => $pedidoProductosPorPedido
+        ]);
+    }
+    
+    #[Route('/acceso-denegado', name: 'acceso-denegado')]
+    public function accesoDenegado() {
+        return $this->render('acceso/acceso_denegado.html.twig');
     }
 }
 

@@ -1,27 +1,60 @@
-{# empty Twig template #}
+{# Template de Correo Electrónico #}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('css/correo.css') }}">
+        {% endblock %}
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1 style="margin: 0; font-size: 24px;">¡Gracias por tu compra!</h1>
+                <p style="margin: 10px 0 0; opacity: 0.9;">Hola, {{ app.user.login }}, hemos recibido tu pedido.</p>
+                <div class="order-badge">Pedido #{{ pedido_id }}</div>
+            </div>
 
-<h1>¡Gracias por su compra {{ app.user.nombre }}!</h1>
-<h2>Identificador de su pedido: #{{ pedido_id }}</h2>
+            <div class="content">
+                <h2 style="font-size: 18px; margin-bottom: 15px;">Resumen del pedido</h2>
 
-<h2>Resumen de su compra: </h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th style="text-align: center;">Cant.</th>
+                            <th style="text-align: right;">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% set total_pedido = 0 %}
+                        {% for codigo, producto in productos %}
+                            {% set unidades_item = unidades[codigo] %}
+                            {% set coste_item = producto.getPrecio() * unidades_item %}
+                            {% set total_pedido = total_pedido + coste_item %}
 
-<table>
-    <tr>
-        <th>Código</th>
-        <th>Nombre</th>
-        <th>Descripción</th>
-        <th>Precio y unidades</th>
-        <th>Precio total</th>
-    </tr>
-    {% for codigo, producto in productos %}
-     <tr>
-      <td>{{ codigo }}</td>
-      <td>{{ producto.getNombreCorto() }}</td>
-      <td>{{ producto.getDescripcion() }}</td>
-      <td>{{ producto.getPrecio() }}€ X{{ unidades[codigo] }}</td>
-      <td>{{ coste }}€</td>
-     </tr>
-    {% endfor %}
-</table>
+                            <tr>
+                                <td>
+                                    <strong style="color: #1e293b;">{{ producto.getNombreCorto() }}</strong><br>
+                                    <span style="font-size: 12px; color: #64748b;">{{ producto.getDescripcion() }}</span>
+                                </td>
+                                <td style="text-align: center; color: #1e293b;">x{{ unidades_item }}</td>
+                                <td style="text-align: right; font-weight: bold; color: #1e293b;">{{ coste_item|number_format(2) }}€</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
 
-<p>Precio total: {{ precioTotal }}€</p>
+                <div class="total-section">
+                    <span style="color: #64748b; font-size: 16px;">Total pagado:</span>
+                    <div style="font-size: 28px; font-weight: 800; color: #6366f1;">{{ total_pedido|number_format(2) }}€</div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>Si tienes alguna duda con tu pedido, responde a este correo.</p>
+                <p style="margin-top: 10px;">&copy; 2024 MiTienda Online. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </body>
+</html>

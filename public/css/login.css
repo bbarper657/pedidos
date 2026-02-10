@@ -1,0 +1,120 @@
+/* Fuente y variables, iguales que en la cabecera */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+:root {
+    --primary-color: #6366f1;
+    --text-main: #1e293b;
+    --bg-glass: rgba(255, 255, 255, 0.85);
+    --bg-light: #f1f5f9;
+    --border-light: #e2e8f0;
+}
+
+/* Fondo general y centrado */
+.login-page {
+    min-height: calc(100vh - 80px); /* Altura menos header */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0b1d3a, #0f2a4d);
+    font-family: 'Inter', sans-serif;
+}
+
+/* Caja del login */
+.login-box {
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 14px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    color: var(--text-main);
+    transition: all 0.3s ease;
+}
+
+/* Título */
+.login-box h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    font-size: 1.8rem;
+}
+
+/* Labels */
+.login-box label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+
+/* Inputs */
+.login-box input[type="text"],
+.login-box input[type="password"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 10px;
+    border: 1.5px solid var(--border-light);
+    background: var(--bg-light);
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    color: var(--text-main);
+}
+
+.login-box input[type="text"]:focus,
+.login-box input[type="password"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+}
+
+/* Botón */
+.login-box button {
+    width: 100%;
+    padding: 0.9rem;
+    background: linear-gradient(to right, #6366f1, #a855f7);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 800;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.login-box button:hover {
+    background: linear-gradient(to right, #7c3aed, #c084fc);
+}
+
+/* Mensajes de error */
+.alert-danger {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Usuario logueado */
+.mb-3 {
+    font-size: 0.9rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.mb-3 a {
+    color: var(--primary-color);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.mb-3 a:hover {
+    text-decoration: underline;
+}

@@ -19,7 +19,7 @@ class PedidoProducto
 
     #[ORM\ManyToOne (cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?producto $producto = null;
+    private ?Producto $producto = null;
 
     #[ORM\Column]
     private ?int $unidades = null;

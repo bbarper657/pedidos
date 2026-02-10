@@ -1,36 +1,53 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Hello ProductosController!{% endblock %}
+{% block title %}Nuestros Productos{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/productos.css') }}">
+{% endblock %}
 
 {% block contenido %}
-    <h1>PRODUCTOS</h1>
-    <form action="{{ path("anadir") }}" method="post">
-    <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-family: Arial, sans-serif;">
-        <thead>
-            <tr style="background-color: #d6eaf8; color: #2c3e50;">
-                <td style="padding: 10px; text-align: left;">Nombre Corto</td>
-                <td style="padding: 10px; text-align: left;">Nombre</td>
-                <td style="padding: 10px; text-align: left;">Descripción</td>
-                <td style="padding: 10px; text-align: left;">Precio</td>
-                <td style="padding: 10px; text-align: left;">Unidades</td>
-            </tr>
-        </thead>
-        <tbody>
-            {% for producto in productos %}
-                <tr style="border-bottom: 1px solid #ddd; background-color: #f4faff;">
-                    <td style="padding: 10px;">{{ producto.getNombreCorto() }}</td>
-                    <td style="padding: 10px;">{{ producto.getNombre() }}</td>
-                    <td style="padding: 10px;">{{ producto.getDescripcion() }}</td>
-                    <td style="padding: 10px;">{{ producto.getPrecio() }}</td>
-                    <td>
-                        <input type="number" name="unidades[]" value="0">
-                        <input type="hidden" name="productos_id[]" value="{{ producto.getId() }}">
-                    </td>
-                </tr>
-            
-            {% endfor %}
-        </tbody>
-    </table>
-        <input type="submit" name="enviar" value="Enviar">
-    </form>
+    <div class="container">
+        <div class="header-seccion">
+            <h1>Nuestros Productos</h1>
+            <p style="color: #64748b;">Añade al carrito los artículos que necesites</p>
+        </div>
+        <form action="{{ path('anadir') }}" method="post">
+            <div class="productos-wrapper">
+                <div class="table-head">
+                    <div>Producto</div>
+                    <div>Descripción</div>
+                    <div>Precio</div>
+                    <div>Cantidad</div>
+                </div>
+                {% for producto in productos %}
+                    <div class="producto-row">
+                        <div class="p-nombre-corto">
+                            {{ producto.getNombreCorto() }}
+                            <div style="font-size: 0.75rem; font-weight: 400; color: #94a3b8; margin-top: 4px;">
+                                {{ producto.getNombre() }}
+                            </div>
+                        </div>
+                        <div class="p-descripcion">
+                            {{ producto.getDescripcion() }}
+                        </div>
+                        <div class="p-precio">
+                            {{ producto.getPrecio() }}€
+                        </div>
+                        <div>
+                            <input type="number" 
+                                   name="unidades[]" 
+                                   value="0" 
+                                   min="0" 
+                                   class="input-unidades">
+                            <input type="hidden" name="productos_id[]" value="{{ producto.getId() }}">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="btn-submit-container">
+                <button type="submit" name="enviar" class="btn-enviar">
+                    Añadir a la cesta
+                </button>
+            </div>
+        </form>
+    </div>
 {% endblock %}

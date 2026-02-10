@@ -1,13 +1,34 @@
-{# empty Twig template #}
 {% extends 'base.html.twig' %}
-
-{% block title %}Pedido Confirmado{% endblock %}
-    
-{% block contenido %}
-    {% if error == 1 %}
-        <p>No hay productos en su pedido</p>
-    {% elseif error == 0 %}
-        <p>Su pedido se ha realizado correctamente</p>
-        <p>ID: {{ pedido_id }}</p>
-    {% endif %}
+{% block title %}Estado del Pedido{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/pedido.css') }}">
 {% endblock %}
+
+{% block contenido %}
+    <div class="status-container">
+        <div class="status-card">
+            {% if error == 1 %}
+                <div class="status-icon error">\u26a0\ufe0f</div>
+                <h1>Vaya, parece que hay un problema</h1>
+                <p>No hemos podido procesar el pedido porque no hay productos seleccionados en tu cesta.</p>
+                <div class="btn-group">
+                    <a href="{{ path('categorias') }}" class="btn-primary">Ir a comprar algo</a>
+                </div>
+            {% elseif error == 0 %}
+                <div class="status-icon success">\u2713</div>
+                <h1>Pedido Confirmado!</h1>
+                <p>Gracias por tu compra. Hemos recibido tu pedido correctamente y ya nos hemos puesto en marcha.</p>
+                <div style="margin-bottom: 2.5rem;">
+                    <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; font-weight: 700;">
+                        Referencia del pedido
+                    </span><br>
+                    <div class="order-id">#{{ pedido_id }}</div>
+                </div>
+                <div class="btn-group">
+                    <a href="{{ path('categorias') }}" class="btn-primary">Seguir explorando</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+

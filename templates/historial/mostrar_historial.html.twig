@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block title %}Historial de pedidos{% endblock %}
+{% block contenido %}
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/historial.css') }}">
+    {% endblock %}
+    <div class="historial-container">
+        <h1>📦 Historial de pedidos</h1>
+
+        {% for pedido in pedidos %}
+            <div class="pedido-card">
+                <div class="pedido-header">
+                    <div>
+                        <strong>Pedido #{{ pedido.id }}</strong><br>
+                        <span class="fecha">{{ pedido.fecha|date('d/m/Y H:i') }}</span>
+                    </div>
+                    <div class="total">
+                        {{ pedido.coste }} €
+                    </div>
+                </div>
+
+                <table class="pedido-table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Unidades</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pp in pedidoProductos[pedido.id] %}
+                            <tr>
+                                <td>{{ pp.producto.nombre }}</td>
+                                <td>{{ pp.unidades }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="sin-pedidos">😕 No has realizado ningún pedido todavía.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

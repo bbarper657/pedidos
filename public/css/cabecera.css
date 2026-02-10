@@ -1,0 +1,97 @@
+/* Importamos una fuente mas moderna */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+:root {
+    --primary-color: #6366f1; /* Un �ndigo vibrante */
+    --text-main: #1e293b;
+    --bg-glass: rgba(255, 255, 255, 0.85);
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px); /* Efecto de desenfoque */
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 0.8rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+}
+
+/* Logo con estilo moderno */
+.header .logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: linear-gradient(to right, #6366f1, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+}
+
+/* Saludo tipo "Badge" */
+.header .saludo {
+    font-size: 0.9rem;
+    color: #64748b;
+    background: #f1f5f9;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.header .saludo strong {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Navegacion */
+.header nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header nav a {
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+/* Efecto hover suave */
+.header nav a:hover {
+    background-color: rgba(99, 102, 241, 0.1);
+    color: var(--primary-color);
+}
+
+/* Boton de Logout destacado */
+.header nav a[href*="logout"] {
+    background-color: #fee2e2;
+    color: #ef4444;
+    margin-left: 10px;
+
+}
+.header nav a[href*="logout"]:hover {
+    background-color: #ef4444;
+    color: white;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+
+}
+/* Responsivo b�sico */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        gap: 12px;
+        padding: 1rem;
+    }
+    .header .saludo {
+        order: 3;
+    }
+}

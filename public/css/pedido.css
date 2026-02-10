@@ -1,0 +1,229 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+
+
+body {
+
+    background-color: #f8fafc;
+
+    font-family: 'Inter', sans-serif;
+
+}
+
+
+
+.status-container {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    min-height: 70vh;
+
+    padding: 2rem;
+
+}
+
+
+
+.status-card {
+
+    background: white;
+
+    max-width: 500px;
+
+    width: 100%;
+
+    padding: 3rem 2rem;
+
+    border-radius: 32px;
+
+    text-align: center;
+
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+
+    border: 1px solid #f1f5f9;
+
+    animation: fadeInUp 0.6s ease-out;
+
+}
+
+
+
+@keyframes fadeInUp {
+
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+
+/* Iconos din�micos */
+
+.status-icon {
+
+    width: 80px;
+
+    height: 80px;
+
+    margin: 0 auto 1.5rem;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 2.5rem;
+
+}
+
+
+
+.status-icon.success {
+
+    background-color: #ecfdf5;
+
+    color: #10b981;
+
+}
+
+
+
+.status-icon.error {
+
+    background-color: #fff7ed;
+
+    color: #f59e0b;
+
+}
+
+
+
+.status-card h1 {
+
+    font-size: 1.8rem;
+
+    font-weight: 800;
+
+    color: #1e293b;
+
+    margin-bottom: 1rem;
+
+}
+
+
+
+.status-card p {
+
+    color: #64748b;
+
+    line-height: 1.6;
+
+    margin-bottom: 2rem;
+
+}
+
+
+
+/* Badge del ID de pedido */
+
+.order-id {
+
+    display: inline-block;
+
+    background: #f1f5f9;
+
+    color: #475569;
+
+    padding: 8px 16px;
+
+    border-radius: 12px;
+
+    font-family: monospace;
+
+    font-weight: 600;
+
+    font-size: 1.1rem;
+
+    margin-top: 0.5rem;
+
+}
+
+
+
+/* Botones de acci�n */
+
+.btn-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+}
+
+
+
+.btn-primary {
+
+    background: #6366f1;
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: 1rem;
+
+    border-radius: 14px;
+
+    font-weight: 700;
+
+    transition: all 0.3s;
+
+}
+
+
+
+.btn-primary:hover {
+
+    background: #4f46e5;
+
+    box-shadow: 0 10px 15px rgba(99, 102, 241, 0.2);
+
+}
+
+
+
+.btn-secondary {
+
+    color: #64748b;
+
+    text-decoration: none;
+
+    font-size: 0.9rem;
+
+    font-weight: 600;
+
+}
+
+
+
+.btn-secondary:hover {
+
+    color: #1e293b;
+
+}

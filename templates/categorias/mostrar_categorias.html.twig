@@ -1,11 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CategoriasController!{% endblock %}
+{% block title %}Categorías{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/categorias.css') }}">
+{% endblock %}
 
 {% block contenido %}
-    <h1>CATEGORIAS</h1>
-    {% for categoria in categorias %}
-        <p><a href="{{ path('productos', {'categoria_id': categoria.id}) }}">{{ categoria.getNombre }}</a></p>
-            
+    <div class="titulo-container">
+        <h1>Explora Colecciones</h1>
+        <p>Selecciona una categoría para ver nuestros productos exclusivos</p>
+    </div>
+
+    <div class="categorias">
+        {% for categoria in categorias %}
+            <a href="{{ path('productos', {'categoria_id': categoria.id}) }}"
+               class="categoria-card">
+                <span class="categoria-nombre">{{ categoria.nombre }}</span>
+            </a>
         {% endfor %}
+    </div>
 {% endblock %}

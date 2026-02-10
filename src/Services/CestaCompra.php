@@ -106,5 +106,10 @@ class CestaCompra {
         }
         return $resultado;
     }
+    
+    public function is_vacia() {
+        $this->carga_cesta();
+        return empty($this->productos);
+    }
 }
 

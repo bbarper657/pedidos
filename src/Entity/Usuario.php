@@ -38,6 +38,9 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $phone = null;
+    
+    // Guarda temporalmente la contraseña en texto claro
+    private $plainPassword;
 
     /**
      * @var Collection<int, Pedido>
@@ -125,10 +128,11 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return $data;
     }
 
+    // Elimina cualquier rastro de información sensible en memoria
     #[\Deprecated]
     public function eraseCredentials(): void
     {
-        // @deprecated, to be removed when upgrading to Symfony 8
+        $this->plainPassword = null;
     }
 
     public function getEmail(): ?string
@@ -183,5 +187,11 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+    
+    // Este método se encarga de si no hay plainPassword, que recoja la que hay en password
+    public function getPlainPassword() {
+        $this->plainPassword = $this->getPassword();
+        return $this->plainPassword;
     }
 }

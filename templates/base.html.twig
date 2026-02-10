@@ -3,6 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+
+        {% block stylesheets %}
+        {% endblock %}
     </head>
     <body>
         <header>
@@ -10,6 +13,7 @@
                 {{ include('cabecera.html.twig') }}
             {% endblock %}
         </header>
+
         {% block contenido %}
         {% endblock %}
     </body>

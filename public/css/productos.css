@@ -1,0 +1,268 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+
+:root {
+
+    --primary: #6366f1;
+
+    --primary-hover: #4f46e5;
+
+    --bg-body: #f8fafc;
+
+    --text-main: #1e293b;
+
+    --text-muted: #64748b;
+
+}
+
+
+
+body {
+
+    background-color: var(--bg-body);
+
+    font-family: 'Inter', sans-serif;
+
+    color: var(--text-main);
+
+}
+
+
+
+.container {
+
+    max-width: 1000px;
+
+    margin: 3rem auto;
+
+    padding: 0 1.5rem;
+
+}
+
+
+
+.header-seccion {
+
+    text-align: center;
+
+    margin-bottom: 3rem;
+
+}
+
+
+
+.header-seccion h1 {
+
+    font-size: 2.5rem;
+
+    font-weight: 800;
+
+    letter-spacing: -1px;
+
+    margin-bottom: 0.5rem;
+
+    background: linear-gradient(to right, #6366f1, #a855f7);
+
+    -webkit-background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+
+}
+
+
+
+/* Estilo de la "Tabla" Moderna */
+
+.productos-wrapper {
+
+    background: white;
+
+    border-radius: 20px;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+
+    overflow: hidden;
+
+    border: 1px solid #e2e8f0;
+
+}
+
+
+
+.producto-row {
+
+    display: grid;
+
+    grid-template-columns: 1.5fr 2fr 1fr 1fr;
+
+    align-items: center;
+
+    padding: 1.5rem;
+
+    border-bottom: 1px solid #f1f5f9;
+
+    transition: background 0.2s ease;
+
+}
+
+
+
+.producto-row:last-child {
+    border-bottom: none;
+}
+
+
+
+.producto-row:hover {
+
+    background-color: #f8faff;
+
+}
+
+
+
+/* Cabecera de la tabla */
+
+.table-head {
+
+    display: grid;
+
+    grid-template-columns: 1.5fr 2fr 1fr 1fr;
+
+    padding: 1rem 1.5rem;
+
+    background: #f1f5f9;
+
+    font-weight: 700;
+
+    font-size: 0.85rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+
+    color: var(--text-muted);
+
+}
+
+
+
+/* Detalles del producto */
+
+.p-nombre-corto {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.p-descripcion {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    padding-right: 1rem;
+}
+
+.p-precio {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #0f172a;
+}
+
+
+
+/* Input de Unidades */
+
+.input-unidades {
+
+    width: 70px;
+
+    padding: 8px 12px;
+
+    border: 2px solid #e2e8f0;
+
+    border-radius: 10px;
+
+    font-family: inherit;
+
+    font-weight: 600;
+
+    text-align: center;
+
+    transition: all 0.2s;
+
+}
+
+
+
+.input-unidades:focus {
+
+    outline: none;
+
+    border-color: var(--primary);
+
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+
+}
+
+
+
+/* Bot�n de env�o */
+
+.btn-submit-container {
+
+    margin-top: 2rem;
+
+    text-align: right;
+
+}
+
+
+
+.btn-enviar {
+
+    background: var(--primary);
+
+    color: white;
+
+    border: none;
+
+    padding: 1rem 2.5rem;
+
+    font-size: 1rem;
+
+    font-weight: 700;
+
+    border-radius: 14px;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+
+}
+
+.btn-enviar:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(99, 102, 241, 0.3);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .table-head {
+        display: none;
+    }
+    .producto-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .p-descripcion {
+        padding-right: 0;
+    }
+
+    .btn-submit-container {
+        text-align: center;
+    }
+}
